@@ -1,0 +1,112 @@
+Установка ssh-сервера (виртуалка ubuntu 20.04): sudo apt install openssh-server 
+Статус сервера: sudo systemctl status ssh (скрин 1)
+
+вывод:
+vm-naumov@VM-naumov:~$ sudo systemctl status ssh
+[sudo] пароль для vm-naumov: 
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Thu 2024-08-08 23:15:35 +07; 52s ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 719 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 735 (sshd)
+      Tasks: 1 (limit: 5988)
+     Memory: 2.3M
+     CGroup: /system.slice/ssh.service
+             └─735 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+
+авг 08 23:15:35 VM-naumov systemd[1]: Starting OpenBSD Secure Shell server...
+авг 08 23:15:35 VM-naumov sshd[735]: Server listening on 0.0.0.0 port 22.
+авг 08 23:15:35 VM-naumov sshd[735]: Server listening on :: port 22.
+авг 08 23:15:35 VM-naumov systemd[1]: Started OpenBSD Secure Shell server.
+
+
+Установка SSH-клиента (основная ось ubuntu 20.04): установленно по умолчанию
+
+статус sudo systemctl status ssh (скрин 1):
+naumov@pc-home:~$ sudo systemctl status ssh
+[sudo] пароль для naumov: 
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: e>
+     Active: active (running) since Thu 2024-08-08 22:40:01 +07; 32min ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 1307 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 1352 (sshd)
+      Tasks: 1 (limit: 14137)
+     Memory: 2.3M
+     CGroup: /system.slice/ssh.service
+             └─1352 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+
+авг 08 22:40:01 pc-home systemd[1]: Starting OpenBSD Secure Shell server...
+авг 08 22:40:01 pc-home sshd[1352]: Server listening on 0.0.0.0 port 22.
+авг 08 22:40:01 pc-home sshd[1352]: Server listening on :: port 22.
+авг 08 22:40:01 pc-home systemd[1]: Started OpenBSD Secure Shell server.
+
+---------------
+
+Создайте пару ключей SSH: ssh-keygen (скрин 2)
+
+вывод:
+naumov@pc-home:~$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/naumov/.ssh/id_rsa): 
+/home/naumov/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/naumov/.ssh/id_rsa
+Your public key has been saved in /home/naumov/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:BonYSjkXyMphT0J+AdDnzIlN9auAOE5KynpjKHINMOM naumov@pc-home
+The key's randomart image is:
++---[RSA 3072]----+
+|+=.o...          |
+|.++=+o o         |
+|ooXX+.o .        |
+|=+o**  . .       |
+|+*o .   S        |
+|BE.  . o         |
+|o+ o  .          |
+|= = .            |
+|++ .             |
++----[SHA256]-----+
+
+--------------------------------------------------
+
+скопировать ключ на сервер: ssh-copy-id vm-naumov@192.168.1.84 (крин)
+
+вывод:
+naumov@pc-home:~$ ssh-copy-id vm-naumov@192.168.1.84
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+vm-naumov@192.168.1.84's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'vm-naumov@192.168.1.84'"
+and check to make sure that only the key(s) you wanted were added.
+
+
+
+task3:
+
+naumov@pc-home:~$ sudo apt install socat
+[sudo] пароль для naumov: 
+Чтение списков пакетов… Готово
+Построение дерева зависимостей       
+Чтение информации о состоянии… Готово
+Следующие НОВЫЕ пакеты будут установлены:
+  socat
+Обновлено 0 пакетов, установлено 1 новых пакетов, для удаления отмечено 0 пакетов, и 0 пакетов не обновлено.
+Необходимо скачать 323 kB архивов.
+После данной операции объём занятого дискового пространства возрастёт на 1 394 kB.
+Пол:1 http://ru.archive.ubuntu.com/ubuntu focal/main amd64 socat amd64 1.7.3.3-2 [323 kB]
+Получено 323 kB за 0с (759 kB/s)
+Выбор ранее не выбранного пакета socat.
+(Чтение базы данных … на данный момент установлено 302116 файлов и каталогов.)
+Подготовка к распаковке …/socat_1.7.3.3-2_amd64.deb …
+Распаковывается socat (1.7.3.3-2) …
+Настраивается пакет socat (1.7.3.3-2) …
+Обрабатываются триггеры для man-db (2.9.1-1) …
